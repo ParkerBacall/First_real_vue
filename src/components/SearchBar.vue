@@ -1,13 +1,30 @@
 <template>
     <div id='search-div'>
-        <input type="text" placeholder="search for a todo by title or text">
+        <form>
+        <input 
+            @input="emitSearchTerm"
+            type="text" 
+            name="searchTerm"
+            :value=searchTerm
+            placeholder="search for a todo by title or text"/>
+         </form>
     </div>
 </template>
 
 <script>
 export default {
-    name: "SearchBar"
+    name: "SearchBar",
+    props: ["searchTerm"],
+
+
+methods: {
+    emitSearchTerm(e){
+        this.$emit('update-search-term', e.target.value)
+    }
+    }
+
 }
+
 </script>
 
 <style lang="css" scoped>

@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <SearchBar/>
+    <SearchBar v-bind:searchTerm="searchTerm" v-on:update-search-term="updateSearchTerm"/>
     <AddTodo v-on:add-todo="createTodo"/>
-    <TodoList v-bind:todos="todos" v-on:del-todo="deleteTodo"/>
+    <TodoList v-bind:todos="updateSearchTerm(searchTerm)" v-on:del-todo="deleteTodo"/>
   </div>
 </template>
 
@@ -10,6 +10,7 @@
     import TodoList from './components/TodoList'; 
     import AddTodo from './components/AddTodo'; 
     import SearchBar from './components/SearchBar'; 
+
 export default {
   name: 'App',
   components: {
@@ -19,24 +20,29 @@ export default {
   },
   data() {
     return {
-      todos:[]
+      todos:[],
+      searchTerm: ""
     }
   },
   methods: {
+
     fetchTodos() {
       fetch('http://localhost:8001/todos')
       .then(response => response.json())
       // .then(console.log)
       .then(todos => this.todos = todos)
     },
+
     deleteTodo(id){
       this.todos = this.todos.filter(todo => todo.id != id)
       fetch(`http://localhost:8001/todos/${id}`, {
         method: 'DELETE'
       })
-      .then(res => console.log(res))
+      .then(res => res.json())
+      .then(console.log)
       .catch(err => console.log(err))
     },
+
     createTodo(newTodo){
       this.todos = [...this.todos, newTodo]
       fetch('http://localhost:8001/todos/', {
@@ -46,8 +52,15 @@ export default {
          },
          body: JSON.stringify(newTodo)
       })
-       .then(res => console.log(res))
+      .then(res => res.json())
+      .then(console.log)
       .catch(err => console.log(err))
+    },
+    updateSearchTerm(newSearchTerm){
+        this.searchTerm = newSearchTerm
+        return this.todos.filter(todo => {
+          return todo.title.includes(newSearchTerm) || todo.text.includes(newSearchTerm)
+        })
     }
   },
 
