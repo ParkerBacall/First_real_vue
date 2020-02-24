@@ -10,13 +10,8 @@
 
 <script>
 export default {
-    name: "AddTodo",
-    data() {
-        return{
-            title: '',
-            text: ''
-        }
-    },
+    name: 'AddTodo',
+    props: ["title","text"],
         methods: {
             addTodo(e){
                 e.preventDefault()
@@ -25,6 +20,8 @@ export default {
                     text: this.text
                 }
             this.$emit('add-todo', newTodo)
+            this.title=""
+            this.text=""
             }
         }
 }

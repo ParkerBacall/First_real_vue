@@ -1,17 +1,36 @@
 <template>
-    <div id='todo'> 
+    <div id='todo' v-if=!this.showUpdateForm>       
         <h3>{{todo.title}}</h3>
         <p>{{todo.text}}</p>
         <button v-on:click="$emit('del-todo', todo.id)" >delete</button>
-        <button v-on:click="$emit('update-todo', todo.id)" >update</button>
+        <button v-on:click="showUpdate" >update</button>
+    </div>
+    <div v-else>
+        <UpdateTodo v-on:patch-todo="$emit('patch-todo', todo.id, todo.title, todo.text)" v-bind:todo="todo" v-on:toggle="showUpdate"/>
     </div>
 </template>
 
+
 <script>
+import UpdateTodo from "./UpdateTodo";
 export default {
     name: "Todo",
-    props: ["todo"]
+    props: ["todo"],
+    components:{
+        UpdateTodo,
+    },
+    data() {
+    return {
+      showUpdateForm: false
+    }
+},
+methods: {
+    showUpdate(){
+        this.showUpdateForm = !this.showUpdateForm
+    }
 }
+}
+
 </script>
 
 <style lang="css" scoped>

@@ -3,7 +3,7 @@
     <div v-bind:key="todo.id" v-for="todo in todos">
       <Todo v-bind:todo="todo" 
       v-on:del-todo="$emit('del-todo', todo.id)"
-      v-on:update-todo="$emit('update-todo', (todo.id, updatedTodo))"
+      v-on:patch-todo="$emit('patch-todo', todo.id, todo.title, todo.text)"
       />
     </div>
   </div>
