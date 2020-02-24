@@ -3,6 +3,7 @@
         <h3>{{todo.title}}</h3>
         <p>{{todo.text}}</p>
         <button v-on:click="$emit('del-todo', todo.id)" >delete</button>
+        <button v-on:click="$emit('update-todo', todo.id)" >update</button>
     </div>
 </template>
 

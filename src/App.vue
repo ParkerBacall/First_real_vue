@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <SearchBar/>
     <AddTodo v-on:add-todo="createTodo"/>
     <TodoList v-bind:todos="todos" v-on:del-todo="deleteTodo"/>
   </div>
@@ -8,11 +9,13 @@
 <script>
     import TodoList from './components/TodoList'; 
     import AddTodo from './components/AddTodo'; 
+    import SearchBar from './components/SearchBar'; 
 export default {
   name: 'App',
   components: {
     TodoList,
-    AddTodo
+    AddTodo,
+    SearchBar
   },
   data() {
     return {
@@ -31,9 +34,10 @@ export default {
       fetch(`http://localhost:8001/todos/${id}`, {
         method: 'DELETE'
       })
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
     },
     createTodo(newTodo){
-      console.log(newTodo)
       this.todos = [...this.todos, newTodo]
       fetch('http://localhost:8001/todos/', {
          method: 'POST',
@@ -42,6 +46,8 @@ export default {
          },
          body: JSON.stringify(newTodo)
       })
+       .then(res => console.log(res))
+      .catch(err => console.log(err))
     }
   },
 

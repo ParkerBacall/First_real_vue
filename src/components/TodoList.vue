@@ -1,7 +1,10 @@
 <template>
   <div id="todoList">
     <div v-bind:key="todo.id" v-for="todo in todos">
-      <Todo v-bind:todo="todo" v-on:del-todo="$emit('del-todo', todo.id)"/>
+      <Todo v-bind:todo="todo" 
+      v-on:del-todo="$emit('del-todo', todo.id)"
+      v-on:update-todo="$emit('update-todo', (todo.id, updatedTodo))"
+      />
     </div>
   </div>
 </template>
